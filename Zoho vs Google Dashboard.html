@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoho vs Google Workspace Dashboard</title>
+    <style>
+        :root {
+            --color-white: rgba(255, 255, 255, 1);
+            --color-black: rgba(0, 0, 0, 1);
+            --color-cream-50: rgba(252, 252, 249, 1);
+            --color-gray-200: rgba(245, 245, 245, 1);
+            --color-gray-300: rgba(167, 169, 169, 1);
+            --color-slate-500: rgba(98, 108, 113, 1);
+            --color-slate-900: rgba(19, 52, 59, 1);
+            --color-teal-500: rgba(33, 128, 141, 1);
+            --color-teal-600: rgba(29, 116, 128, 1);
+            --color-teal-700: rgba(26, 104, 115, 1);
+            --color-red-400: rgba(255, 84, 89, 1);
+            --color-orange-500: rgba(168, 75, 47, 1);
+            --color-blue-400: rgba(59, 130, 246, 1);
+
+            --color-background: var(--color-cream-50);
+            --color-surface: var(--color-white);
+            --color-text: var(--color-slate-900);
+            --color-text-secondary: var(--color-slate-500);
+            --color-primary: var(--color-teal-500);
+            --color-primary-hover: var(--color-teal-600);
+            --color-primary-active: var(--color-teal-700);
+            --color-border: rgba(98, 108, 113, 0.2);
+
+            --font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-size-sm: 12px;
+            --font-size-base: 14px;
+            --font-size-md: 14px;
+            --font-size-lg: 16px;
+            --font-size-xl: 18px;
+            --font-size-2xl: 20px;
+            --font-size-3xl: 24px;
+            --font-size-4xl: 30px;
+            --font-weight-normal: 400;
+            --font-weight-medium: 500;
+            --font-weight-semibold: 550;
+            --font-weight-bold: 600;
+
+            --space-4: 4px;
+            --space-8: 8px;
+            --space-12: 12px;
+            --space-16: 16px;
+            --space-20: 20px;
+            --space-24: 24px;
+            --space-32: 32px;
+
+            --radius-sm: 6px;
+            --radius-base: 8px;
+            --radius-md: 10px;
+            --radius-lg: 12px;
+
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-family-base);
+            background-color: var(--color-background);
+            color: var(--color-text);
+        }
+
+        body {
+            padding: var(--space-20);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: var(--space-32);
+        }
+
+        .header h1 {
+            margin: 0 0 var(--space-8) 0;
+            font-size: var(--font-size-4xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-slate-900);
+        }
+
+        .header p {
+            margin: 0;
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-lg);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tabs {
+            display: flex;
+            gap: var(--space-12);
+            margin-bottom: var(--space-24);
+            border-bottom: 2px solid var(--color-border);
+        }
+
+        .tab-btn {
+            padding: var(--space-12) var(--space-20);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text-secondary);
+            transition: all 250ms ease;
+            position: relative;
+        }
+
+        .tab-btn.active {
+            color: var(--color-primary);
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--color-primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-20);
+            margin-bottom: var(--space-24);
+        }
+
+        .card {
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border);
+            padding: var(--space-20);
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow 250ms ease;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-12);
+            margin-bottom: var(--space-16);
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-base);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .card-icon.google {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .card-icon.zoho {
+            background: rgba(33, 128, 141, 0.1);
+        }
+
+        .card h3 {
+            margin: 0;
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+        }
+
+        .card p {
+            margin: 0;
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-base);
+            line-height: 1.6;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: var(--space-4) var(--space-12);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            margin-bottom: var(--space-12);
+        }
+
+        .badge.strength {
+            background: rgba(33, 128, 141, 0.1);
+            color: var(--color-teal-700);
+        }
+
+        .badge.weakness {
+            background: rgba(255, 84, 89, 0.1);
+            color: var(--color-red-400);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: var(--space-24);
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: var(--space-16);
+            text-align: left;
+            border-bottom: 1px solid var(--color-border);
+            font-size: var(--font-size-base);
+        }
+
+        .comparison-table th {
+            background: var(--color-gray-200);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-slate-900);
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .rating {
+            display: flex;
+            gap: var(--space-4);
+            align-items: center;
+        }
+
+        .star {
+            color: #fbbf24;
+            font-size: 16px;
+        }
+
+        .star.empty {
+            color: var(--color-border);
+        }
+
+        .metric-bar {
+            height: 8px;
+            background: var(--color-border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: var(--space-8);
+        }
+
+        .metric-bar-fill {
+            height: 100%;
+            background: var(--color-teal-500);
+            transition: width 500ms ease;
+        }
+
+        .section-title {
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-bold);
+            margin: var(--space-24) 0 var(--space-16) 0;
+            color: var(--color-slate-900);
+        }
+
+        .recommendation-box {
+            background: rgba(33, 128, 141, 0.05);
+            border-left: 4px solid var(--color-teal-500);
+            padding: var(--space-16);
+            border-radius: var(--radius-base);
+            margin-bottom: var(--space-16);
+        }
+
+        .recommendation-box h4 {
+            margin: 0 0 var(--space-8) 0;
+            color: var(--color-teal-700);
+            font-weight: var(--font-weight-semibold);
+        }
+
+        .recommendation-box p {
+            margin: 0;
+            color: var(--color-text);
+            font-size: var(--font-size-base);
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: var(--space-12) 0;
+        }
+
+        .feature-list li {
+            padding: var(--space-8) 0;
+            padding-left: var(--space-24);
+            position: relative;
+            font-size: var(--font-size-base);
+            color: var(--color-text);
+            line-height: 1.5;
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--color-teal-500);
+            font-weight: bold;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--color-teal-500) 0%, var(--color-teal-600) 100%);
+            color: white;
+            padding: var(--space-24);
+            border-radius: var(--radius-lg);
+            text-align: center;
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-card h3 {
+            margin: 0 0 var(--space-8) 0;
+            font-size: var(--font-size-3xl);
+            font-weight: var(--font-weight-bold);
+        }
+
+        .stat-card p {
+            margin: 0;
+            font-size: var(--font-size-lg);
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: var(--space-16);
+            }
+
+            .header h1 {
+                font-size: var(--font-size-3xl);
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                flex-wrap: wrap;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: var(--space-12);
+                font-size: var(--font-size-sm);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Zoho vs Google Workspace</h1>
+            <p>Comprehensive Dashboard Comparison &amp; Analysis</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('overview')">Overview</button>
+            <button class="tab-btn" onclick="switchTab('features')">Features</button>
+            <button class="tab-btn" onclick="switchTab('comparison')">Detailed Comparison</button>
+            <button class="tab-btn" onclick="switchTab('recommendation')">Recommendations</button>
+        </div>
+
+        <!-- Overview Tab -->
+        <div id="overview" class="tab-content active">
+            <div class="grid">
+                <div class="stat-card">
+                    <h3>100M+</h3>
+                    <p>Zoho Global Users</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, var(--color-blue-400) 0%, #3b82f6 100%);">
+                    <h3>8B+</h3>
+                    <p>Google Workspace Users</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, var(--color-orange-500) 0%, #d97706 100%);">
+                    <h3>45</h3>
+                    <p>Zoho Integrated Apps</p>
+                </div>
+            </div>
+
+            <h2 class="section-title">Quick Overview</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon zoho">🔧</div>
+                        <div>
+                            <h3>Zoho Workspace</h3>
+                        </div>
+                    </div>
+                    <span class="badge strength">Cost-Effective</span><br>
+                    <span class="badge strength">Privacy-Focused</span><br>
+                    <p><strong>Ideal for:</strong> Startups, SMBs, Privacy-conscious organizations</p>
+                    <p><strong>Key Strength:</strong> Integrated ecosystem with 45+ apps, advanced automation, data localization control</p>
+                    <p><strong>Learning Curve:</strong> Average - requires time to explore full suite</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon google">📊</div>
+                        <div>
+                            <h3>Google Workspace</h3>
+                        </div>
+                    </div>
+                    <span class="badge strength">User-Friendly</span><br>
+                    <span class="badge strength">Collaboration</span><br>
+                    <p><strong>Ideal for:</strong> Large enterprises, cross-border operations, cloud-native businesses</p>
+                    <p><strong>Key Strength:</strong> Seamless real-time collaboration, market leader, Gemini AI integration</p>
+                    <p><strong>Learning Curve:</strong> Low - intuitive interface</p>
+                </div>
+            </div>
+
+            <h2 class="section-title">Key Differentiators</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3 style="color: var(--color-teal-600);">Zoho's Strengths</h3>
+                    <ul class="feature-list">
+                        <li>Affordable pricing tiers</li>
+                        <li>Strong privacy &amp; data control</li>
+                        <li>45+ integrated business apps</li>
+                        <li>Built-in automation (Zoho Flow)</li>
+                        <li>Regional compliance support</li>
+                        <li>No advertising on customer data</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--color-blue-400);">Google's Strengths</h3>
+                    <ul class="feature-list">
+                        <li>Industry-leading collaboration</li>
+                        <li>Advanced Gemini AI integration</li>
+                        <li>Cross-platform familiarity</li>
+                        <li>Superior real-time editing</li>
+                        <li>Global data centers</li>
+                        <li>Premium integration ecosystem</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Tab -->
+        <div id="features" class="tab-content">
+            <h2 class="section-title">Feature Comparison</h2>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature Category</th>
+                        <th>Google Workspace</th>
+                        <th>Zoho Workspace</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Document Tools</strong></td>
+                        <td>Docs, Sheets, Slides (Industry Standard)</td>
+                        <td>Writer, Sheet, Show (Comparable)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Email</strong></td>
+                        <td>Gmail (Premium)</td>
+                        <td>Zoho Mail (Reliable)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Storage</strong></td>
+                        <td>Google Drive (Highly Scalable)</td>
+                        <td>Workdrive (Scalable)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Communication</strong></td>
+                        <td>Meet, Chat, Hangouts</td>
+                        <td>Cliq, Meeting, Connect</td>
+                    </tr>
+                    <tr>
+                        <td><strong>AI Assistant</strong></td>
+                        <td>Gemini (Advanced - Advanced content generation, coding)</td>
+                        <td>Zia (Basic - Task automation assistance)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Automation</strong></td>
+                        <td>Google Apps Script (Requires coding)</td>
+                        <td>Zoho Flow (No-code automation)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Business Apps Integration</strong></td>
+                        <td>Limited native integrations</td>
+                        <td>45+ integrated apps (CRM, Finance, HR)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Security</strong></td>
+                        <td>AI-driven threat detection, Encryption, 2FA</td>
+                        <td>Enterprise-grade, Regional compliance</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Privacy Focus</strong></td>
+                        <td>Data-driven advertising models</td>
+                        <td>No advertising on user data</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Learning Curve</strong></td>
+                        <td>Very Low - Intuitive</td>
+                        <td>Average - More features to explore</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Detailed Comparison Tab -->
+        <div id="comparison" class="tab-content">
+            <h2 class="section-title">Detailed Analysis</h2>
+
+            <h3>User Experience &amp; Interface</h3>
+            <div class="grid">
+                <div class="card">
+                    <h3 style="color: var(--color-blue-400);">Google Workspace</h3>
+                    <p><strong>Rating:</strong></p>
+                    <div class="rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                    <p style="margin-top: var(--space-12);">Cross-platform familiarity, clean interface, seamless navigation. Suitable for users of all technical levels.</p>
+                    <div class="metric-bar">
+                        <div class="metric-bar-fill" style="width: 95%;"></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--color-teal-600);">Zoho Workspace</h3>
+                    <p><strong>Rating:</strong></p>
+                    <div class="rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star empty">★</span>
+                    </div>
+                    <p style="margin-top: var(--space-12);">Comprehensive but requires learning time. Tighter internal integration with many customization options.</p>
+                    <div class="metric-bar">
+                        <div class="metric-bar-fill" style="width: 80%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Real-time Collaboration</h3>
+            <div class="grid">
+                <div class="card">
+                    <h3 style="color: var(--color-blue-400);">Google Workspace</h3>
+                    <p><strong>Rating:</strong></p>
+                    <div class="rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                    <p style="margin-top: var(--space-12);">Industry-leading real-time collaboration with seamless commenting, concurrent editing, and instant synchronization.</p>
+                    <div class="metric-bar">
+                        <div class="metric-bar-fill" style="width: 100%;"></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--color-teal-600);">Zoho Workspace</h3>
+                    <p><strong>Rating:</strong></p>
+                    <div class="rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star empty">★</span>
+                        <span class="star empty">★</span>
+                    </div>
+                    <p style="margin-top: var(--space-12);">Solid collaboration features but Google remains superior in real-time performance and smoothness.</p>
+                    <div class="metric-bar">
+                        <div class="metric-bar-fill" style="width: 75%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Automation &amp; Customization</h3>
+            <div class="grid">
+                <div class="card">
+                    <h3 style="color: var(--color-blue-400);">Google Workspace</h3>
+                    <p><strong>Rating:</strong></p>
+                    <div class="rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star empty">★</span>
+                        <span class="star empty">★</span>
+                    </div>
+                    <p style="margin-top: var(--space-12);">Automation via Google Apps Script requires programming knowledge. Limited for non-technical users.</p>
+                    <div class="metric-bar">
+                        <div class="metric-bar-fill" style="width: 60%;"></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--color-teal-600);">Zoho Workspace</h3>
+                    <p><strong>Rating:</strong></p>
+                    <div class="rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                    <p style="margin-top: var(--space-12);">Zoho Flow provides no-code automation. Accessible to non-technical users. 30% productivity increase reported.</p>
+                    <div class="metric-bar">
+                        <div class="metric-bar-fill" style="width: 95%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Pricing &amp; Cost</h3>
+            <div class="grid">
+                <div class="card">
+                    <h3 style="color: var(--color-blue-400);">Google Workspace</h3>
+                    <p><strong>Rating:</strong></p>
+                    <div class="rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star empty">★</span>
+                        <span class="star empty">★</span>
+                    </div>
+                    <p style="margin-top: var(--space-12);">Premium pricing. Ideal for large organizations with budget capacity.</p>
+                    <div class="metric-bar">
+                        <div class="metric-bar-fill" style="width: 55%;"></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--color-teal-600);">Zoho Workspace</h3>
+                    <p><strong>Rating:</strong></p>
+                    <div class="rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                    <p style="margin-top: var(--space-12);">Budget-friendly. Multiple affordable tiers. Excellent for cost-conscious organizations.</p>
+                    <div class="metric-bar">
+                        <div class="metric-bar-fill" style="width: 90%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Data Privacy &amp; Security</h3>
+            <div class="grid">
+                <div class="card">
+                    <h3 style="color: var(--color-blue-400);">Google Workspace</h3>
+                    <p><strong>Rating:</strong></p>
+                    <div class="rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star empty">★</span>
+                    </div>
+                    <p style="margin-top: var(--space-12);">Strong security, encryption, 2FA. Limited data localization control. Advertising-driven model.</p>
+                    <div class="metric-bar">
+                        <div class="metric-bar-fill" style="width: 80%;"></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--color-teal-600);">Zoho Workspace</h3>
+                    <p><strong>Rating:</strong></p>
+                    <div class="rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                    <p style="margin-top: var(--space-12);">Enterprise-grade security, data localization, regional compliance. No advertising. Privacy-first approach.</p>
+                    <div class="metric-bar">
+                        <div class="metric-bar-fill" style="width: 98%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recommendation Tab -->
+        <div id="recommendation" class="tab-content">
+            <h2 class="section-title">Strategic Recommendations</h2>
+
+            <div class="recommendation-box">
+                <h4>✓ Choose Zoho Workspace for:</h4>
+                <p><strong>Startups &amp; Small Firms</strong><br>Cost-effectiveness, ease of use, and integrated ecosystem provide value for businesses with tight budgets and diverse operational needs.</p>
+            </div>
+
+            <div class="recommendation-box">
+                <h4>✓ Choose Google Workspace for:</h4>
+                <p><strong>Medium &amp; Large Organizations</strong><br>Sophisticated collaboration features, scalability, and international reliability support complex multi-team environments and cross-border operations.</p>
+            </div>
+
+            <div class="recommendation-box">
+                <h4>✓ Choose Zoho Workspace for:</h4>
+                <p><strong>Privacy-Focused Organizations</strong><br>Greater data localization control and privacy regulation adherence make it ideal for organizations handling sensitive data or operating in regions with strict compliance requirements.</p>
+            </div>
+
+            <div class="recommendation-box">
+                <h4>✓ Choose Google Workspace for:</h4>
+                <p><strong>Global Cross-Border Operations</strong><br>Widespread data centers and optimization ensure better speed and reliability for organizations operating across multiple countries and time zones.</p>
+            </div>
+
+            <div class="recommendation-box">
+                <h4>✓ Choose Google Workspace for:</h4>
+                <p><strong>Cloud-Native Organizations</strong><br>Better integration with cloud services and advanced automation capabilities (Gemini AI) support organizations aiming for complete cloud-native operations.</p>
+            </div>
+
+            <h2 class="section-title">Summary Matrix</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Criteria</th>
+                        <th>Winner</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Cost-Effectiveness</strong></td>
+                        <td style="color: var(--color-teal-600); font-weight: bold;">Zoho</td>
+                        <td>More affordable tiers and flexible pricing options</td>
+                    </tr>
+                    <tr>
+                        <td><strong>User Experience</strong></td>
+                        <td style="color: var(--color-blue-400); font-weight: bold;">Google</td>
+                        <td>Intuitive interface with minimal learning curve</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Collaboration</strong></td>
+                        <td style="color: var(--color-blue-400); font-weight: bold;">Google</td>
+                        <td>Industry-leading real-time collaboration features</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Automation</strong></td>
+                        <td style="color: var(--color-teal-600); font-weight: bold;">Zoho</td>
+                        <td>No-code Zoho Flow accessible to all users</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Privacy &amp; Security</strong></td>
+                        <td style="color: var(--color-teal-600); font-weight: bold;">Zoho</td>
+                        <td>Greater data control and privacy-first approach</td>
+                    </tr>
+                    <tr>
+                        <td><strong>AI Capabilities</strong></td>
+                        <td style="color: var(--color-blue-400); font-weight: bold;">Google</td>
+                        <td>Advanced Gemini AI integration across all tools</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Integration Ecosystem</strong></td>
+                        <td style="color: var(--color-teal-600); font-weight: bold;">Zoho</td>
+                        <td>45+ integrated business applications</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Scalability</strong></td>
+                        <td style="color: var(--color-blue-400); font-weight: bold;">Google</td>
+                        <td>Better for large-scale global operations</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2 class="section-title">Final Verdict</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Zoho: The Smart Choice for SMBs</h3>
+                    <p>Zoho Workspace delivers exceptional value with an integrated ecosystem, cost-effectiveness, and strong privacy features. Best for organizations seeking affordability, automation, and data control without compromising on enterprise capabilities.</p>
+                </div>
+                <div class="card">
+                    <h3>Google: The Enterprise Standard</h3>
+                    <p>Google Workspace remains the market leader for organizations prioritizing seamless collaboration, advanced AI, and global scalability. Ideal for large enterprises and globally distributed teams requiring premium features.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            // Hide all tab contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
